@@ -1,0 +1,119 @@
+while True:
+    do = input('what would you like to do? (look at stock [1] | add items [2] | edit stock [3] | other [4] | quit [5]) > ')
+    do = do.strip().lower()
+    if do == 'quit' or do == '5':
+        quit(1)
+    if do == 'other' or do == '4':
+        suggest = input('what would you like a suggestion on? (cost) > ')
+        suggest = suggest.strip().lower()
+        if suggest == 'cost':
+            try:
+                making_cost = float(input('how much is the cost to make the object? > '))
+                hours = int(input('how manny hours duse it take to make the object? > '))
+                # suggest the new price
+                suggest = (making_cost * hours) * 0.05
+                print('the cost suggestion is',suggest)
+                break
+            except ValueError:
+                print('sorry, it must be a number')
+                break
+    if do == 'look at stock' or do == '1':
+        # reed
+        file = open(r"C:\Users\danie\Desktop\login.txt", 'r')
+        # if you want to look at 1 object
+        i = 0
+        while i < 1:
+            look_at = input('is there an object you would like to look at (y|n) > ')
+            look_at = look_at.strip().lower()
+            if look_at == 'y':
+                name = input('what is the name of the object you would like to look at? > ')
+                for line in file:
+                    if name in line:
+                        print(line)
+                i = 1
+            elif look_at == 'n':
+                # read full file
+                for line in file:
+                    print(line)
+                i = 1
+            else:
+                print('sorry, but "{}" is not an option'.format(look_at))
+    elif do == 'add items' or do == '2':
+        # write
+        file = open(r"C:\Users\danie\Desktop\login.txt",'a')
+        name = input('what is the name of the object > ')
+        try:
+            cost = float(input('what is the cost of the object > '))
+        except ValueError:
+            print('sorry, cost needs to be a number')
+            break
+        # if you would like to add anything else
+        i = 0
+        while i < 1:
+            include = input('is there anything else you would like to include? (y|n) > ')
+            include = include.strip().lower()
+            if include == 'n':
+                file.write(name + ' {:.2f} \n'.format(cost))
+                i = 1
+            elif include == 'y':
+                file.write(name + ' {:.2f} '.format(cost))
+                try:
+                    number = int(input('how many things would you like to add? > '))
+                except ValueError:
+                    print('sorry, it needs to be a number')
+                    break
+                for _ in range(number):
+                    stand = input('what else would you like to add? > ')
+                    file.write(stand + ' ')
+                file.write('\n')
+                i = 1
+            else:
+                print('sorry, but "{}" is not an option'.format(include))
+    # edit a line
+    elif do == 'edit stock' or do == '3':
+        edit = input('what is the name of the object you would like to edit? > ')
+        edit = edit.strip().lower()
+        # remove the line
+        with open(r"C:\Users\danie\Desktop\login.txt", "r") as fp:
+            lines = fp.readlines()
+        with open(r"C:\Users\danie\Desktop\login.txt", "w") as fp:
+            for line in lines:
+                if edit not in line.strip("\n"):
+                    fp.write(line)
+        # add the edit
+        file = open(r"C:\Users\danie\Desktop\login.txt", 'a')
+        name = input('what is the new name of the object > ')
+        try:
+            cost = float(input('what is the new cost of the object > '))
+        except ValueError:
+            print('sorry, cost needs to be a number')
+            break
+        i = 0
+        while i < 1:
+            include = input('is there anything else you would like to include? (y|n) > ')
+            include = include.strip().lower()
+            if include == 'n':
+                file.write(name + ' {:.2f} \n'.format(cost))
+                i = 1
+            elif include == 'y':
+                file.write(name + ' {:.2f} '.format(cost))
+                try:
+                    number = int(input('how many things would you like to add? > '))
+                except ValueError:
+                    print('sorry, it needs to be a number')
+                    break
+                for _ in range(number):
+                    stand = input('what else would you like to add? > ')
+                    file.write(stand)
+                file.write('\n')
+                i = 1
+            else:
+                print('sorry, but "{}" is not an option'.format(include))
+    else:
+        print('sorry, but "{}" is not an option'.format(do))
+    # close file
+    try:
+        file.close()
+    except NameError:
+        pass
+    print()
